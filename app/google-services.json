@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "477111398670",
+    "project_id": "tite-f804f",
+    "storage_bucket": "tite-f804f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:477111398670:android:58c4de451d7785572aa75f",
+        "android_client_info": {
+          "package_name": "com.example.tite"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "477111398670-m25amq8l5ppbq5ivsaqr1k8fukudpait.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJpkSQJ_qRr7r9yzl4HImXiXbRtiLn1cU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "477111398670-m25amq8l5ppbq5ivsaqr1k8fukudpait.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

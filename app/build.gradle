@@ -74,5 +74,6 @@ dependencies {
     def coroutines_version = '1.4.1'
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
 
-
+    //AdapterDelegates for RecyclerView
+    implementation 'com.hannesdorfmann:adapterdelegates4-kotlin-dsl-viewbinding:4.3.0'
 }
