@@ -24,7 +24,7 @@ class MessageListFragment : Fragment(R.layout.fragment_message_list) {
             MessageListItem.MessageItem("How are you?", true),
             MessageListItem.MessageItem("Oh, really nice!", false),
         )
-        updateToolbarTitle(navArgs.personName)
+        updateToolbar(navArgs.personName)
     }
 
     override fun onDestroyView() {
@@ -32,8 +32,9 @@ class MessageListFragment : Fragment(R.layout.fragment_message_list) {
         binding = null
     }
 
-    private fun updateToolbarTitle(title: String) {
-        (activity as MainActivity).toolbarTitle = title
+    private fun updateToolbar(title: String) {
+        val toolbar = (activity as MainActivity).toolbar
+        toolbar?.title = title
     }
 
     private fun initRecyclerView() {

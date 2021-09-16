@@ -11,13 +11,8 @@ import com.example.tite.R
 class MainActivity : AppCompatActivity() {
 
     private var navController: NavController? = null
-    private var toolbar: Toolbar? = null
-
-    var toolbarTitle
-        get() = toolbar?.title
-        set(value) {
-            toolbar?.title = value
-        }
+    var toolbar: Toolbar? = null
+    private set
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +36,6 @@ class MainActivity : AppCompatActivity() {
         navController = navHostFragment.navController
         navController?.let {
             NavigationUI.setupActionBarWithNavController(this, it)
-            it.graph.startDestination = R.id.personListFragment
         }
     }
 }
