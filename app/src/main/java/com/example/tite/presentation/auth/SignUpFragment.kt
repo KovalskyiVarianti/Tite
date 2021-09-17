@@ -11,11 +11,14 @@ import com.example.tite.presentation.MainActivity
 import com.example.tite.presentation.extensions.showSnackbar
 import com.example.tite.utils.AuthUtils
 import com.google.android.material.snackbar.Snackbar
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
 
     private var binding: FragmentSignUpBinding? = null
-    private val authUtils: AuthUtils = AuthUtils
+    private val authUtils: AuthUtils by inject()
+    private val viewModel : AuthViewModel by viewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

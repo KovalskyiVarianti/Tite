@@ -8,11 +8,14 @@ import androidx.navigation.fragment.findNavController
 import com.example.tite.R
 import com.example.tite.databinding.FragmentPersonListBinding
 import com.example.tite.presentation.MainActivity
+import com.example.tite.presentation.messagelist.MessageListViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PersonListFragment : Fragment(R.layout.fragment_person_list) {
 
     private var binding: FragmentPersonListBinding? = null
     private var adapter: PersonListAdapter? = null
+    private val viewModel : PersonListViewModel by viewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

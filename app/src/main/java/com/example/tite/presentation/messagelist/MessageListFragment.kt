@@ -7,12 +7,15 @@ import androidx.navigation.fragment.navArgs
 import com.example.tite.R
 import com.example.tite.databinding.FragmentMessageListBinding
 import com.example.tite.presentation.MainActivity
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MessageListFragment : Fragment(R.layout.fragment_message_list) {
 
-    private var binding: FragmentMessageListBinding? = null
-    private var adapter: MessageListAdapter? = null
     private val navArgs by navArgs<MessageListFragmentArgs>()
+    private var binding: FragmentMessageListBinding? = null
+    private val viewModel : MessageListViewModel by viewModel()
+    private var adapter: MessageListAdapter? = null
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

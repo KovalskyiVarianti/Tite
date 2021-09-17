@@ -5,11 +5,14 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.tite.R
 import com.example.tite.utils.AuthUtils
+import org.koin.android.ext.android.inject
 
 class AuthActivity : AppCompatActivity() {
 
+    private val authUtils : AuthUtils by inject()
+
     override fun onCreate(savedInstanceState: Bundle?) {
-        AuthUtils.firebaseAuth.currentUser?.let {
+        authUtils.firebaseAuth.currentUser?.let {
             startActivity(Intent(this, MainActivity::class.java))
         }
         super.onCreate(savedInstanceState)

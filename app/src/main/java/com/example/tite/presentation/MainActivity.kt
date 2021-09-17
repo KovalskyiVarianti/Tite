@@ -13,14 +13,17 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.tite.R
 import com.example.tite.databinding.ActivityMainBinding
 import com.example.tite.databinding.DrawerHeaderBinding
+import com.example.tite.utils.AuthUtils
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
+import org.koin.android.ext.android.inject
 
 class MainActivity : AppCompatActivity() {
 
     private var binding: ActivityMainBinding? = null
     private var drawerHeaderBinding: DrawerHeaderBinding? = null
     private var navController: NavController? = null
+    private val authUtils : AuthUtils by inject()
     var toolbar: Toolbar? = null
         private set
 
@@ -30,8 +33,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding?.root)
         initToolbar()
         initNavController()
-        drawerHeaderBinding?.emailText?.text = FirebaseAuth.getInstance().currentUser?.email
-        drawerHeaderBinding?.nameText?.text = FirebaseAuth.getInstance().currentUser?.uid
+        drawerHeaderBinding?.emailText?.text = authUtils.userEmail
+        drawerHeaderBinding?.nameText?.text = authUtils.userUID
     }
 
     override fun onDestroy() {

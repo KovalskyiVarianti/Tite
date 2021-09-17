@@ -2,6 +2,7 @@ package com.example.tite
 
 import android.app.Application
 import android.content.Intent
+import com.example.tite.di.appModule
 import com.example.tite.presentation.MainActivity
 import com.example.tite.utils.AuthUtils
 import com.google.firebase.auth.FirebaseAuth
@@ -21,7 +22,7 @@ class App : Application() {
         GlobalContext.startKoin {
             androidLogger()
             androidContext(this@App)
-            //TODO modules(appModule)
+            modules(appModule)
         }
     }
 }

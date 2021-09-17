@@ -5,7 +5,7 @@ import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 
-object AuthUtils {
+class AuthUtils {
 
     val firebaseAuth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
 
