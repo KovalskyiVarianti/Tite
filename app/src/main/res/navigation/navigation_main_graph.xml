@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_graph"
+    app:startDestination="@id/personListFragment">
+
+    <fragment
+        android:id="@+id/personListFragment"
+        android:name="com.example.tite.presentation.personlist.PersonListFragment"
+        android:label="PersonListFragment"
+        tools:layout="@layout/fragment_person_list">
+        <action
+            android:id="@+id/action_personListFragment_to_messageListFragment"
+            app:destination="@id/messageListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/messageListFragment"
+        android:name="com.example.tite.presentation.messagelist.MessageListFragment"
+        android:label="MessageListFragment"
+        tools:layout="@layout/fragment_message_list">
+        <argument
+            android:name="personName"
+            app:argType="string" />
+    </fragment>
+</navigation>
