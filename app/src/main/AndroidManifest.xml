@@ -15,7 +15,8 @@
         android:theme="@style/Theme.Tite">
         <activity
             android:name=".presentation.AuthActivity"
-            android:exported="true">
+            android:exported="true"
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,8 +25,8 @@
         </activity>
         <activity
             android:name=".presentation.MainActivity"
-            android:exported="true">
-
+            android:exported="true"
+            android:noHistory="true">
         </activity>
     </application>
 

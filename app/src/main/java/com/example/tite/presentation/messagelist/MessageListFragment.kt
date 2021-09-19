@@ -21,12 +21,6 @@ class MessageListFragment : Fragment(R.layout.fragment_message_list) {
         super.onViewCreated(view, savedInstanceState)
         initBinding(view)
         initRecyclerView()
-        adapter?.items = listOf(
-            MessageListItem.MessageItem("Hello", true),
-            MessageListItem.MessageItem("Hi", false),
-            MessageListItem.MessageItem("How are you?", true),
-            MessageListItem.MessageItem("Oh, really nice!", false),
-        )
         updateToolbar(navArgs.personName)
     }
 
