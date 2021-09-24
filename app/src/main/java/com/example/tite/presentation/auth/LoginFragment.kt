@@ -15,7 +15,6 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 class LoginFragment : Fragment(R.layout.fragment_login) {
 
     private var binding: FragmentLoginBinding? = null
-    private val userManager: UserManager by inject()
     private val viewModel: AuthViewModel by sharedViewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Tite</string>
     <string name="sign_out">Sign Out</string>
+    <string name="to_persons">To persons</string>
 </resources>

@@ -6,7 +6,8 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.tite.R
-import com.example.tite.presentation.auth.AuthState
+import com.example.tite.databinding.AuthActivityBinding
+import com.example.tite.domain.AuthState
 import com.example.tite.presentation.auth.AuthViewModel
 import com.example.tite.presentation.extensions.showSnackbar
 import com.google.android.material.snackbar.Snackbar
@@ -15,6 +16,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AuthActivity : AppCompatActivity() {
 
+    //TODO Maybe binding ignore in future
+    private var binding: AuthActivityBinding? = null
     private val viewModel: AuthViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,10 +25,15 @@ class AuthActivity : AppCompatActivity() {
         initViewModel()
     }
 
-    private fun initViewModel() = lifecycleScope.launchWhenStarted {
-        viewModel.loginState.collect { loginState ->
-            when (loginState) {
-                is AuthState.Success -> startActivity(
+    override fun onDestroy() {
+        super.onDestroy()
+        binding = null
+    }
+
+    private fun initViewModel() = lifecycleScope.launchWhenCreated {
+        viewModel.authState.collect { authState ->
+            when (authState) {
+                is AuthState.LoggedIn -> startActivity(
                     Intent(
                         this@AuthActivity,
                         MainActivity::class.java
@@ -33,9 +41,9 @@ class AuthActivity : AppCompatActivity() {
                 )
                 is AuthState.Failure -> {
                     window.decorView.findViewById<View>(android.R.id.content)
-                        .showSnackbar(loginState.message ?: "Error", Snackbar.LENGTH_LONG)
+                        .showSnackbar(authState.message, Snackbar.LENGTH_LONG)
                 }
-                null -> {
+                is AuthState.LoggedOut -> {
                     setContentView(R.layout.auth_activity)
                 }
             }

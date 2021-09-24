@@ -5,7 +5,15 @@
       <map>
         <entry key="..\:/Users/koval/Desktop/poliTEX/Curse/Tite/app/src/main/res/layout/activity_main.xml" value="0.2" />
         <entry key="..\:/Users/koval/Desktop/poliTEX/Curse/Tite/app/src/main/res/layout/auth_activity.xml" value="0.2" />
+        <entry key="..\:/Users/koval/Desktop/poliTEX/Curse/Tite/app/src/main/res/layout/chat_item.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/koval/Desktop/poliTEX/Curse/Tite/app/src/main/res/layout/drawer_header.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/koval/Desktop/poliTEX/Curse/Tite/app/src/main/res/layout/fragment_chat_list.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/koval/Desktop/poliTEX/Curse/Tite/app/src/main/res/layout/fragment_login.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/koval/Desktop/poliTEX/Curse/Tite/app/src/main/res/layout/fragment_message_list.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/koval/Desktop/poliTEX/Curse/Tite/app/src/main/res/layout/fragment_person_list.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/koval/Desktop/poliTEX/Curse/Tite/app/src/main/res/layout/fragment_sign_up.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/koval/Desktop/poliTEX/Curse/Tite/app/src/main/res/layout/message_item.xml" value="0.15833333333333333" />
+        <entry key="..\:/Users/koval/Desktop/poliTEX/Curse/Tite/app/src/main/res/layout/person_item.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/koval/Desktop/poliTEX/Curse/Tite/app/src/main/res/menu/drawer_menu.xml" value="0.25416666666666665" />
       </map>
     </option>

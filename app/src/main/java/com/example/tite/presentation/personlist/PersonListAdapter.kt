@@ -2,6 +2,7 @@ package com.example.tite.presentation.personlist
 
 import androidx.recyclerview.widget.DiffUtil
 import com.example.tite.databinding.PersonItemBinding
+import com.example.tite.presentation.PersonClickListener
 import com.hannesdorfmann.adapterdelegates4.AsyncListDifferDelegationAdapter
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateViewBinding
 
@@ -9,8 +10,7 @@ class PersonListAdapter(private val personClickListener: PersonClickListener) :
     AsyncListDifferDelegationAdapter<PersonListItem>(PersonListDiffCallback) {
 
     init {
-        delegatesManager
-            .addDelegate(personDelegate())
+        delegatesManager.addDelegate(personDelegate())
     }
 
     private fun personDelegate() =
@@ -23,10 +23,8 @@ class PersonListAdapter(private val personClickListener: PersonClickListener) :
                 binding.apply {
                     personImage //TODO add Image loading
                     personName.text = item.personName
-                    personMessageText.text = item.messageText
-                    root.setOnClickListener {
-                        this@PersonListAdapter.personClickListener.invoke(item.personName)
-                    }
+                    personRelation.text = "${item.personRelation}\n${item.uid}"
+                    root.setOnClickListener { this@PersonListAdapter.personClickListener(item) }
                 }
             }
         }
@@ -35,7 +33,7 @@ class PersonListAdapter(private val personClickListener: PersonClickListener) :
         override fun areItemsTheSame(oldItem: PersonListItem, newItem: PersonListItem): Boolean {
             return when {
                 oldItem is PersonListItem.PersonItem && newItem is PersonListItem.PersonItem -> {
-                    oldItem.personName == newItem.personName
+                    oldItem.uid == newItem.uid
                 }
                 else -> {
                     oldItem === newItem

@@ -1,9 +1,7 @@
 package com.example.tite
 
 import android.app.Application
-import com.example.tite.di.authModule
-import com.example.tite.di.messageModule
-import com.example.tite.di.personModule
+import com.example.tite.di.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.GlobalContext
@@ -20,7 +18,7 @@ class App : Application() {
         GlobalContext.startKoin {
             androidLogger()
             androidContext(this@App)
-            modules(authModule, personModule, messageModule)
+            modules(authModule, viewModelModule, repositoryModule, databaseModule)
         }
     }
 }

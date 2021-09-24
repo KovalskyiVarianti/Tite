@@ -1,8 +1,10 @@
 package com.example.tite.presentation.messagelist
 
 import android.view.Gravity
+import android.view.View
 import androidx.recyclerview.widget.DiffUtil
 import com.example.tite.databinding.MessageItemBinding
+import com.example.tite.presentation.chatlist.ChatListItem
 import com.hannesdorfmann.adapterdelegates4.AsyncListDifferDelegationAdapter
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateViewBinding
 
@@ -34,7 +36,14 @@ class MessageListAdapter :
 
     companion object MessageListDiffCallback : DiffUtil.ItemCallback<MessageListItem>() {
         override fun areItemsTheSame(oldItem: MessageListItem, newItem: MessageListItem): Boolean {
-            return oldItem === newItem
+            return when {
+                oldItem is MessageListItem.MessageItem && newItem is MessageListItem.MessageItem -> {
+                    oldItem.id == newItem.id
+                }
+                else -> {
+                    oldItem === newItem
+                }
+            }
         }
 
         override fun areContentsTheSame(

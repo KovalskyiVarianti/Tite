@@ -15,8 +15,7 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
 
     private var binding: FragmentSignUpBinding? = null
-    private val userManager: UserManager by inject()
-    private val viewModel : AuthViewModel by sharedViewModel()
+    private val viewModel: AuthViewModel by sharedViewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -35,9 +34,10 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
 
     private fun FragmentSignUpBinding.initButtons() {
         signUpButton.setOnClickListener {
+            val nickname = nicknameEditText.text.toString()
             val email = emailEditText.text.toString()
             val password = passwordEditText.text.toString()
-            viewModel.signUp(email, password)
+            viewModel.signUp(nickname, email, password)
         }
         loginButton.setOnClickListener {
             findNavController()

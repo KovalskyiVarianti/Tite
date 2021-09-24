@@ -1,9 +1,15 @@
 package com.example.tite.presentation.personlist
 
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
 sealed interface PersonListItem {
+    @Parcelize
     data class PersonItem(
+        val uid: String,
         val personName: String,
+        val personEmail: String,
         val personImageUrl: String,
-        val messageText: String
+        val personRelation: String
     ) : PersonListItem
 }

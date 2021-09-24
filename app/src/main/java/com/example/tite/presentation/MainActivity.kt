@@ -4,7 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -13,6 +15,7 @@ import com.example.tite.R
 import com.example.tite.databinding.ActivityMainBinding
 import com.example.tite.databinding.DrawerHeaderBinding
 import com.example.tite.domain.UserManager
+import com.example.tite.presentation.chatlist.ChatListFragmentDirections
 import org.koin.android.ext.android.inject
 
 class MainActivity : AppCompatActivity() {
@@ -32,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         initNavController()
         initNavViewButtons()
         drawerHeaderBinding?.emailText?.text = userManager.userEmail
-        drawerHeaderBinding?.nameText?.text = userManager.userUID
+        drawerHeaderBinding?.nameText?.text = userManager.name
     }
 
     override fun onDestroy() {
@@ -63,6 +66,15 @@ class MainActivity : AppCompatActivity() {
             setupActionBarWithNavController(it, binding?.drawer)
             binding?.navView?.setupWithNavController(it)
         }
+        navController?.addOnDestinationChangedListener { controller, destination, _ ->
+            binding?.drawer?.setDrawerLockMode(
+                if (destination.id == controller.graph.startDestination) {
+                    DrawerLayout.LOCK_MODE_UNLOCKED
+                } else {
+                    DrawerLayout.LOCK_MODE_LOCKED_CLOSED
+                }
+            )
+        }
     }
 
     private fun initNavViewButtons() {
@@ -73,6 +85,11 @@ class MainActivity : AppCompatActivity() {
                     startActivity(
                         Intent(this, AuthActivity::class.java)
                     )
+                    true
+                }
+                R.id.personListFragment -> {
+//                    if (navController?.graph?.startDestination == navController?.currentDestination?.id)
+                    navController?.navigate(ChatListFragmentDirections.actionChatListFragmentToPersonListFragment())
                     true
                 }
                 else -> {

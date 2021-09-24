@@ -2,16 +2,11 @@ package com.example.tite.presentation.personlist
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import com.example.tite.R
 import com.example.tite.databinding.FragmentPersonListBinding
-import com.example.tite.presentation.MainActivity
-import com.example.tite.presentation.messagelist.MessageListViewModel
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PersonListFragment : Fragment(R.layout.fragment_person_list) {
@@ -24,25 +19,28 @@ class PersonListFragment : Fragment(R.layout.fragment_person_list) {
         super.onViewCreated(view, savedInstanceState)
         initBinding(view)
         initRecyclerView()
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewModel.personList.collect {
-                adapter?.items = it
-            }
+        initViewModel()
+    }
+
+    private fun initViewModel() = lifecycleScope.launchWhenCreated {
+        viewModel.personList.collect {
+            adapter?.items = it
         }
     }
 
     private fun initRecyclerView() {
-        adapter = PersonListAdapter { personName ->
-            navigateToDetail(personName)
+        adapter = PersonListAdapter { person ->
+            navigateToDetail(person.uid)
+            viewModel.createChat(person)
         }
         binding?.let { it.personListRecyclerView.adapter = adapter }
     }
 
-    private fun navigateToDetail(personName: String) {
-        findNavController().navigate(
-            PersonListFragmentDirections
-                .actionPersonListFragmentToMessageListFragment(personName)
-        )
+    private fun navigateToDetail(personUID: String) {
+//        findNavController().navigate(
+//            PersonListFragmentDirections
+//                .actionPersonListFragmentToMessageListFragment(personUID)
+//        )
     }
 
     override fun onDestroyView() {
