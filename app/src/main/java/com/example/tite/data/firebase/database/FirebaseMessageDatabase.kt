@@ -43,9 +43,9 @@ class FirebaseMessageDatabase(firebaseRTDB: FirebaseDatabase) {
         withContext(Dispatchers.IO) {
             val messagePush = messageDB.child(chatId).push()
             messagePush.setValue(messageDBEntity.copy(id = messagePush.key))
-            chatDB.child(messageDBEntity.sender?.uid.orEmpty()).child(chatId).child("message")
+            chatDB.child(messageDBEntity.sender?.uid.orEmpty()).child(chatId).child(MESSAGE_CHILD)
                 .setValue(messageDBEntity.text)
-            chatDB.child(messageDBEntity.receiverUID.orEmpty()).child(chatId).child("message")
+            chatDB.child(messageDBEntity.receiverUID.orEmpty()).child(chatId).child(MESSAGE_CHILD)
                 .setValue(messageDBEntity.text)
         }
 
@@ -60,5 +60,6 @@ class FirebaseMessageDatabase(firebaseRTDB: FirebaseDatabase) {
     private companion object {
         const val CHAT_ROOT = "chats"
         const val MESSAGE_ROOT = "messages"
+        const val MESSAGE_CHILD = "message"
     }
 }

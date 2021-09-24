@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -15,85 +15,108 @@
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="25sp"
-        app:layout_constraintBottom_toTopOf="@id/emailLabel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/nicknameLabel"
+    <LinearLayout
+        android:id="@+id/signUpFields"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="40dp"
-        android:layout_marginTop="100dp"
-        android:text="Nickname:"
-        android:textColor="@color/white"
-        android:textSize="20sp" />
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@id/toLoginLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/signUpTitle">
 
-    <EditText
-        android:id="@+id/nicknameEditText"
+        <TextView
+            android:id="@+id/nicknameLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nickname:"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/nicknameEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/white"
+            android:inputType="textEmailAddress"
+            android:maxLines="1"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/emailLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Email:"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/emailEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/white"
+            android:inputType="textEmailAddress"
+            android:maxLines="1"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/passwordLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Password:"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/passwordEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/white"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/signUpButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:backgroundTint="@color/main_color"
+            android:text="Sign up" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/toLoginLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="40dp"
-        android:backgroundTint="@color/white"
-        android:inputType="textEmailAddress"
-        android:maxLines="1"
-        android:textColor="@color/white" />
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/signUpFields">
 
-    <TextView
-        android:id="@+id/emailLabel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="40dp"
-        android:text="Email:"
-        android:textColor="@color/white"
-        android:textSize="20sp" />
+        <TextView
+            android:id="@+id/loginDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="If already have an account - "
+            android:textColor="@color/white" />
 
-    <EditText
-        android:id="@+id/emailEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="40dp"
-        android:backgroundTint="@color/white"
-        android:inputType="textEmailAddress"
-        android:maxLines="1"
-        android:textColor="@color/white" />
+        <TextView
+            android:id="@+id/loginButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Log in"
+            android:textColor="@color/purple_200" />
+    </LinearLayout>
 
-    <TextView
-        android:id="@+id/passwordLabel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="40dp"
-        android:text="Password:"
-        android:textColor="@color/white"
-        android:textSize="20sp" />
-
-    <EditText
-        android:id="@+id/passwordEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="40dp"
-        android:backgroundTint="@color/white"
-        android:inputType="textPassword"
-        android:maxLines="1"
-        android:textColor="@color/white" />
-
-    <Button
-        android:id="@+id/signUpButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Sign up"
-        android:layout_margin="10dp"
-        android:backgroundTint="@color/main_color"
-        android:layout_gravity="center"
-        />
-    <Button
-        android:id="@+id/loginButton"
-        android:layout_marginTop="100dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Log in"/>
-
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

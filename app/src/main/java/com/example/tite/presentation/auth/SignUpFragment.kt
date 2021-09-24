@@ -7,6 +7,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.tite.R
 import com.example.tite.databinding.FragmentSignUpBinding
 import com.example.tite.domain.UserManager
+import com.example.tite.presentation.extensions.hideKeyboard
 import com.example.tite.presentation.extensions.showSnackbar
 import com.google.android.material.snackbar.Snackbar
 import org.koin.android.ext.android.inject
@@ -34,6 +35,7 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
 
     private fun FragmentSignUpBinding.initButtons() {
         signUpButton.setOnClickListener {
+            requireActivity().hideKeyboard()
             val nickname = nicknameEditText.text.toString()
             val email = emailEditText.text.toString()
             val password = passwordEditText.text.toString()
