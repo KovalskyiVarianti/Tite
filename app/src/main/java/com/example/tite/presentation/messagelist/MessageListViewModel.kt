@@ -48,7 +48,7 @@ class MessageListViewModel(
                 chatId,
                 MessageEntity(
                     null,
-                    userManager.asPersonEntity(),
+                    userManager.userUID.orEmpty(),
                     personUID,
                     text
                 )
@@ -57,9 +57,6 @@ class MessageListViewModel(
     }
 
     private fun MessageEntity.asMessageItem() = MessageListItem.MessageItem(
-        id.orEmpty(), text, sender.uid == userManager.userUID
+        id.orEmpty(), text, senderUID == userManager.userUID
     )
-
-    private fun UserManager.asPersonEntity() =
-        PersonEntity(userUID.orEmpty(), name.orEmpty(), userEmail.orEmpty(), photoUrl.toString())
 }

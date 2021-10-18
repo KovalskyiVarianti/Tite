@@ -51,9 +51,9 @@ class FirebaseChatDatabase(firebaseRTDB: FirebaseDatabase) {
         withContext(Dispatchers.IO) {
             val chatSelfPush = chatDB.child(selfPerson.uid.orEmpty()).push()
             chatSelfPush.key?.let { key ->
-                chatSelfPush.setValue(ChatDBEntity(key, listOf(selfPerson, person)))
+                chatSelfPush.setValue(ChatDBEntity(key, listOf(selfPerson.uid.orEmpty(), person.uid.orEmpty())))
                 chatDB.child(person.uid.orEmpty()).child(key)
-                    .setValue(ChatDBEntity(key, listOf(selfPerson, person)))
+                    .setValue(ChatDBEntity(key, listOf(selfPerson.uid.orEmpty(), person.uid.orEmpty())))
             }
         }
 

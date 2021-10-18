@@ -32,12 +32,12 @@ class FirebaseMessageRepository(private val messageDatabase: FirebaseMessageData
     }
 
     private fun MessageEntity.asMessageDBEntity() =
-        MessageDBEntity(id, sender.asPersonDBEntity(), receiverUID, text)
+        MessageDBEntity(id, senderUID, receiverUID, text)
 
     private fun MessageDBEntity.asMessageEntity() =
         MessageEntity(
             id,
-            sender?.asPersonEntity() ?: PersonEntity("", "", "", ""),
+            senderUID.orEmpty(),
             receiverUID.orEmpty(),
             text.orEmpty()
         )

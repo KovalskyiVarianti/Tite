@@ -12,7 +12,7 @@
         tools:listitem="@layout/person_item"
         android:background="@color/main_variant_color"
         tools:itemCount="8"
-        app:spanCount="3"
+        app:spanCount="2"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

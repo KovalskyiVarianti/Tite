@@ -1,14 +1,19 @@
 package com.example.tite.data.firebase.database
 
-import com.example.tite.domain.entities.PersonEntity
-import com.google.firebase.database.*
+import com.example.tite.domain.UserManager
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.BufferOverflow
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import timber.log.Timber
 
 class FirebasePersonDatabase(
-    firebaseRTDB: FirebaseDatabase
+    firebaseRTDB: FirebaseDatabase,
+    private val userManager: UserManager
 ) {
     private val personDB = firebaseRTDB.getReference(PERSON_ROOT)
 
@@ -27,6 +32,9 @@ class FirebasePersonDatabase(
             coroutineScope.launch {
                 val personList = mutableListOf<PersonDBEntity>()
                 for (personsChild in snapshot.children) {
+                    if (personsChild.key.equals(userManager.userUID)) {
+                        continue
+                    }
                     personList.add(personsChild.getValue(PersonDBEntity::class.java) ?: continue)
                 }
                 _personDBEntityList.emit(personList)

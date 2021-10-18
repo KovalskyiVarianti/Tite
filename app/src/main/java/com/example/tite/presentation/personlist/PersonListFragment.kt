@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.example.tite.R
 import com.example.tite.databinding.FragmentPersonListBinding
 import kotlinx.coroutines.flow.collect
@@ -22,25 +23,23 @@ class PersonListFragment : Fragment(R.layout.fragment_person_list) {
         initViewModel()
     }
 
-    private fun initViewModel() = lifecycleScope.launchWhenCreated {
-        viewModel.personList.collect {
-            adapter?.items = it
+    private fun initViewModel() {
+        lifecycleScope.launchWhenCreated {
+            viewModel.personList.collect {
+                adapter?.items = it
+            }
         }
     }
 
     private fun initRecyclerView() {
         adapter = PersonListAdapter { person ->
-            navigateToDetail(person.uid)
+            findNavController().navigate(
+                PersonListFragmentDirections
+                    .actionPersonListFragmentToChatListFragment()
+            )
             viewModel.createChat(person)
         }
         binding?.let { it.personListRecyclerView.adapter = adapter }
-    }
-
-    private fun navigateToDetail(personUID: String) {
-//        findNavController().navigate(
-//            PersonListFragmentDirections
-//                .actionPersonListFragmentToMessageListFragment(personUID)
-//        )
     }
 
     override fun onDestroyView() {

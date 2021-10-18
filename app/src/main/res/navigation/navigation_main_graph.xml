@@ -11,8 +11,8 @@
         android:label="Persons"
         tools:layout="@layout/fragment_person_list">
         <action
-            android:id="@+id/action_personListFragment_to_messageListFragment"
-            app:destination="@id/messageListFragment"
+            android:id="@+id/action_personListFragment_to_chatListFragment"
+            app:destination="@id/chatListFragment"
             app:popUpTo="@id/chatListFragment" />
     </fragment>
     <fragment

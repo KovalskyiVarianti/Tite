@@ -7,6 +7,7 @@ import com.example.tite.domain.repository.ChatRepository
 import com.example.tite.domain.entities.PersonEntity
 import com.example.tite.domain.repository.PersonRepository
 import com.example.tite.domain.UserManager
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
@@ -18,15 +19,12 @@ class PersonListViewModel(
     val personList = personRepository.personList.map { it.asPersonItemList() }
 
     private fun List<PersonEntity>.asPersonItemList() = map { person ->
-        if (userManager.userEmail == person.email) {
-            PersonListItem.PersonItem(person.uid, "SELF", person.photo, person.email, "")
-        } else {
-            PersonListItem.PersonItem(person.uid, person.name, person.photo, person.email, "")
-        }
+        PersonListItem.PersonItem(person.uid, person.name, person.email, person.photo)
     }
 
     fun createChat(person: PersonListItem.PersonItem) {
         viewModelScope.launch {
+
             chatRepository.createChat(userManager.asPersonEntity(), person.asPersonEntity())
         }
     }

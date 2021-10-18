@@ -29,13 +29,13 @@ val authModule = module {
 val viewModelModule = module {
     viewModel { AuthViewModel(get()) }
     viewModel { MessageListViewModel(get(), get(), get(), get()) }
-    viewModel { ChatListViewModel(get(), get()) }
+    viewModel { ChatListViewModel(get(), get(), get()) }
     viewModel { PersonListViewModel(get(), get(), get()) }
 }
 
 val databaseModule = module {
     factory { FirebaseChatDatabase(createRealtimeDB) }
-    factory { FirebasePersonDatabase(createRealtimeDB) }
+    factory { FirebasePersonDatabase(createRealtimeDB, get()) }
     factory { FirebaseMessageDatabase(createRealtimeDB) }
 }
 

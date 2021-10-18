@@ -10,6 +10,5 @@ sealed interface PersonListItem {
         val personName: String,
         val personEmail: String,
         val personImageUrl: String,
-        val personRelation: String
     ) : PersonListItem
 }

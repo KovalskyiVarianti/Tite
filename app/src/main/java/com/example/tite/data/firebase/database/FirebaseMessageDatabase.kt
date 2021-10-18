@@ -43,7 +43,7 @@ class FirebaseMessageDatabase(firebaseRTDB: FirebaseDatabase) {
         withContext(Dispatchers.IO) {
             val messagePush = messageDB.child(chatId).push()
             messagePush.setValue(messageDBEntity.copy(id = messagePush.key))
-            chatDB.child(messageDBEntity.sender?.uid.orEmpty()).child(chatId).child(MESSAGE_CHILD)
+            chatDB.child(messageDBEntity.senderUID.orEmpty()).child(chatId).child(MESSAGE_CHILD)
                 .setValue(messageDBEntity.text)
             chatDB.child(messageDBEntity.receiverUID.orEmpty()).child(chatId).child(MESSAGE_CHILD)
                 .setValue(messageDBEntity.text)

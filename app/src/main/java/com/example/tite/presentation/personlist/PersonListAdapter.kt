@@ -23,7 +23,7 @@ class PersonListAdapter(private val personClickListener: PersonClickListener) :
                 binding.apply {
                     personImage //TODO add Image loading
                     personName.text = item.personName
-                    personRelation.text = "${item.personRelation}\n${item.uid}"
+                    personEmail.text = item.personEmail
                     root.setOnClickListener { this@PersonListAdapter.personClickListener(item) }
                 }
             }

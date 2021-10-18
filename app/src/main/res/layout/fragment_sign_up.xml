@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="50dp"
-        android:text="Sign up"
+        android:text="@string/sign_up_title"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="25sp"
@@ -34,7 +34,8 @@
             android:id="@+id/nicknameLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Nickname:"
+            android:labelFor="@id/nicknameEditText"
+            android:text="@string/nickname_title"
             android:textColor="@color/white"
             android:textSize="20sp" />
 
@@ -42,16 +43,20 @@
             android:id="@+id/nicknameEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:autofillHints="username"
             android:backgroundTint="@color/white"
-            android:inputType="textEmailAddress"
+            android:inputType="textPersonName"
             android:maxLines="1"
+            android:hint="@string/nickname_hint"
+            android:textColorHint="@color/purple_200"
             android:textColor="@color/white" />
 
         <TextView
             android:id="@+id/emailLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Email:"
+            android:labelFor="@id/emailEditText"
+            android:text="@string/email_title"
             android:textColor="@color/white"
             android:textSize="20sp" />
 
@@ -59,16 +64,20 @@
             android:id="@+id/emailEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:autofillHints="emailAddress"
             android:backgroundTint="@color/white"
+            android:hint="@string/email_edit_text_hint"
             android:inputType="textEmailAddress"
             android:maxLines="1"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textColorHint="@color/purple_200" />
 
         <TextView
             android:id="@+id/passwordLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Password:"
+            android:labelFor="@+id/passwordEditText"
+            android:text="@string/password_title"
             android:textColor="@color/white"
             android:textSize="20sp" />
 
@@ -76,6 +85,7 @@
             android:id="@+id/passwordEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:autofillHints="password"
             android:backgroundTint="@color/white"
             android:inputType="textPassword"
             android:maxLines="1"
@@ -88,7 +98,7 @@
             android:layout_gravity="center"
             android:layout_margin="10dp"
             android:backgroundTint="@color/main_color"
-            android:text="Sign up" />
+            android:text="@string/sign_up_title" />
 
     </LinearLayout>
 
@@ -107,15 +117,16 @@
             android:id="@+id/loginDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="If already have an account - "
+            android:text="@string/login_description"
             android:textColor="@color/white" />
 
         <TextView
+            android:layout_marginStart="3dp"
             android:id="@+id/loginButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Log in"
+            android:text="@string/login_title"
             android:textColor="@color/purple_200" />
     </LinearLayout>
 

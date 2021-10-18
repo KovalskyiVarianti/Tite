@@ -2,4 +2,13 @@
     <string name="app_name">Tite</string>
     <string name="sign_out">Sign Out</string>
     <string name="to_persons">To persons</string>
+    <string name="login_title">Log in</string>
+    <string name="email_title">Email:</string>
+    <string name="password_title">Password:</string>
+    <string name="sign_up_description_text">If you don\'t have an account -</string>
+    <string name="sign_up_title">Sign up</string>
+    <string name="nickname_title">Nickname:</string>
+    <string name="login_description">If already have an account -</string>
+    <string name="email_edit_text_hint">example@example.com</string>
+    <string name="nickname_hint">Some Name</string>
 </resources>

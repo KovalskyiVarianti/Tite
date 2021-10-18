@@ -16,7 +16,7 @@ data class PersonDBEntity(
 @IgnoreExtraProperties
 data class ChatDBEntity(
     val id: String? = "",
-    val members: List<PersonDBEntity>? = listOf(),
+    val members: List<String>? = listOf(),
     val message: String? = null
 )
 
@@ -24,7 +24,7 @@ data class ChatDBEntity(
 @IgnoreExtraProperties
 data class MessageDBEntity(
     val id: String? = "",
-    val sender: PersonDBEntity? = null,
+    val senderUID: String? = "",
     val receiverUID: String? = "",
     val text: String? = "",
 )
