@@ -4,12 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tite.domain.entities.MessageEntity
 import com.example.tite.domain.repository.MessageRepository
-import com.example.tite.domain.entities.PersonEntity
 import com.example.tite.domain.UserManager
 import com.example.tite.domain.repository.ChatRepository
 import com.example.tite.domain.repository.PersonRepository
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
@@ -45,18 +42,23 @@ class MessageListViewModel(
     fun sendMessage(chatId: String, personUID: String, text: String) {
         viewModelScope.launch {
             messageRepository.sendMessage(
-                chatId,
                 MessageEntity(
                     null,
                     userManager.userUID.orEmpty(),
                     personUID,
                     text
-                )
+                ),
+                chatId,
             )
+
         }
     }
 
     private fun MessageEntity.asMessageItem() = MessageListItem.MessageItem(
         id.orEmpty(), text, senderUID == userManager.userUID
     )
+
+    override fun onCleared() {
+        super.onCleared()
+    }
 }

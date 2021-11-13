@@ -1,7 +1,7 @@
-package com.example.tite.data.firebase.repository
+package com.example.tite.data.network.firebase.repository
 
-import com.example.tite.data.firebase.database.FirebasePersonDatabase
-import com.example.tite.data.firebase.database.PersonDBEntity
+import com.example.tite.data.network.firebase.database.FirebasePersonDatabase
+import com.example.tite.data.network.firebase.database.PersonDBEntity
 import com.example.tite.domain.repository.AuthRepository
 import com.example.tite.domain.AuthState
 import com.example.tite.domain.UserManager
@@ -59,6 +59,6 @@ class FirebaseAuthRepository(
     }
 
     private fun UserManager.getPersonDBEntity(nickname: String) = PersonDBEntity(
-        userUID.orEmpty(), nickname, userEmail.orEmpty(), photoUrl.toString()
+        userUID.orEmpty(), nickname, userEmail.orEmpty(), photoUri.toString()
     )
 }

@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        app:cardBackgroundColor="@color/message_color"
+        app:cardBackgroundColor="@color/main_light_color"
         app:cardCornerRadius="10dp">
 
         <TextView

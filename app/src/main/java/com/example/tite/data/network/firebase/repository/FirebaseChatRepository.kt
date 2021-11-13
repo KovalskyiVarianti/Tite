@@ -1,8 +1,8 @@
-package com.example.tite.data.firebase.repository
+package com.example.tite.data.network.firebase.repository
 
-import com.example.tite.data.firebase.database.ChatDBEntity
-import com.example.tite.data.firebase.database.FirebaseChatDatabase
-import com.example.tite.data.firebase.database.PersonDBEntity
+import com.example.tite.data.network.firebase.database.ChatDBEntity
+import com.example.tite.data.network.firebase.database.FirebaseChatDatabase
+import com.example.tite.data.network.firebase.database.PersonDBEntity
 import com.example.tite.domain.entities.ChatEntity
 import com.example.tite.domain.repository.ChatRepository
 import com.example.tite.domain.entities.PersonEntity
@@ -24,20 +24,29 @@ class FirebaseChatRepository(private val chatDatabase: FirebaseChatDatabase) : C
         chatDatabase.removeChatListener(uid)
     }
 
-    override suspend fun createChat(selfPerson: PersonEntity, person: PersonEntity) {
+    override suspend fun createChat(
+        selfPerson: PersonEntity,
+        person: PersonEntity,
+        onChatIdCreated: (chatId: String) -> Unit
+    ) {
         withContext(Dispatchers.IO) {
-            chatDatabase.createChat(selfPerson.asPersonDBEntity(), person.asPersonDBEntity())
+            chatDatabase.createChat(
+                selfPerson.asPersonDBEntity(),
+                person.asPersonDBEntity(),
+                onChatIdCreated
+            )
         }
     }
 
     private fun ChatDBEntity.asChatEntity() =
-        ChatEntity(id.orEmpty(), members?.map { it.asPersonEntity() }.orEmpty(), message.orEmpty())
+        ChatEntity(id.orEmpty(), members.orEmpty(), message.orEmpty())
 
     private fun PersonEntity.asPersonDBEntity() =
         PersonDBEntity(uid, name, email, photo)
 
     private fun PersonDBEntity.asPersonEntity() =
-        PersonEntity(uid.orEmpty(), name.orEmpty(), email.orEmpty(), photoUrl.orEmpty())
+        PersonEntity(uid.orEmpty(), name.orEmpty(), email.orEmpty(), photoUri.orEmpty())
 }
+
 
 

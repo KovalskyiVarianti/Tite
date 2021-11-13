@@ -9,6 +9,6 @@ sealed interface PersonListItem {
         val uid: String,
         val personName: String,
         val personEmail: String,
-        val personImageUrl: String,
+        val personImageUri: String,
     ) : PersonListItem
 }

@@ -1,4 +1,4 @@
-package com.example.tite.data.firebase.database
+package com.example.tite.data.network.firebase.database
 
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -7,7 +7,6 @@ import com.google.firebase.database.ValueEventListener
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import timber.log.Timber
 
@@ -43,17 +42,32 @@ class FirebaseChatDatabase(firebaseRTDB: FirebaseDatabase) {
         chatDB.child(uid).addValueEventListener(chatListener)
     }
 
-    fun removeChatListener(uid: String){
+    fun removeChatListener(uid: String) {
         chatDB.child(uid).removeEventListener(chatListener)
     }
 
-    suspend fun createChat(selfPerson: PersonDBEntity, person: PersonDBEntity) =
+    suspend fun createChat(
+        selfPerson: PersonDBEntity,
+        person: PersonDBEntity,
+        onChatIdCreated: (chatId: String) -> Unit
+    ) =
         withContext(Dispatchers.IO) {
             val chatSelfPush = chatDB.child(selfPerson.uid.orEmpty()).push()
             chatSelfPush.key?.let { key ->
-                chatSelfPush.setValue(ChatDBEntity(key, listOf(selfPerson.uid.orEmpty(), person.uid.orEmpty())))
+                onChatIdCreated(key)
+                chatSelfPush.setValue(
+                    ChatDBEntity(
+                        key,
+                        listOf(selfPerson.uid.orEmpty(), person.uid.orEmpty())
+                    )
+                )
                 chatDB.child(person.uid.orEmpty()).child(key)
-                    .setValue(ChatDBEntity(key, listOf(selfPerson.uid.orEmpty(), person.uid.orEmpty())))
+                    .setValue(
+                        ChatDBEntity(
+                            key,
+                            listOf(selfPerson.uid.orEmpty(), person.uid.orEmpty())
+                        )
+                    )
             }
         }
 

@@ -18,7 +18,14 @@ class App : Application() {
         GlobalContext.startKoin {
             androidLogger()
             androidContext(this@App)
-            modules(authModule, viewModelModule, repositoryModule, databaseModule)
+            modules(
+                authModule,
+                viewModelModule,
+                repositoryModule,
+                databaseModule,
+                firebaseModule,
+                retrofitModule
+            )
         }
     }
 }

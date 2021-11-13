@@ -1,4 +1,4 @@
-package com.example.tite.data.firebase.database
+package com.example.tite.data.network.firebase.database
 
 import com.google.firebase.database.IgnoreExtraProperties
 import kotlinx.android.parcel.Parcelize
@@ -9,7 +9,7 @@ data class PersonDBEntity(
     val uid: String? = "",
     val name: String? = "",
     val email: String? = "",
-    val photoUrl: String? = "",
+    val photoUri: String? = null,
 )
 
 @Parcelize

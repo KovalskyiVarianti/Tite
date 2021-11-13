@@ -1,12 +1,15 @@
 package com.example.tite.presentation
 
 import android.content.Intent
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -14,18 +17,30 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.tite.R
 import com.example.tite.databinding.ActivityMainBinding
 import com.example.tite.databinding.DrawerHeaderBinding
-import com.example.tite.domain.UserManager
 import com.example.tite.presentation.chatlist.ChatListFragmentDirections
+import kotlinx.coroutines.flow.collect
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import androidx.core.app.ActivityCompat.startActivityForResult
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import com.example.tite.domain.UserManager
+import com.example.tite.presentation.extensions.loadAvatar
+import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.messaging.FirebaseMessagingService
+import com.google.firebase.messaging.RemoteMessage
+import com.google.firebase.storage.FirebaseStorage
 import org.koin.android.ext.android.inject
+import timber.log.Timber
+
 
 class MainActivity : AppCompatActivity() {
 
     private var binding: ActivityMainBinding? = null
     private var drawerHeaderBinding: DrawerHeaderBinding? = null
     private var navController: NavController? = null
-    private val userManager: UserManager by inject()
     var toolbar: Toolbar? = null
         private set
+    private val viewModel: MainViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,8 +49,24 @@ class MainActivity : AppCompatActivity() {
         initToolbar()
         initNavController()
         initNavViewButtons()
-        drawerHeaderBinding?.emailText?.text = userManager.userEmail
-        drawerHeaderBinding?.nameText?.text = userManager.name
+
+
+
+        val reg = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            viewModel.uploadAvatar(uri) { avatarUri ->
+                drawerHeaderBinding?.avatarImage?.loadAvatar(avatarUri.toString())
+            }
+        }
+        drawerHeaderBinding?.avatarImage?.setOnClickListener {
+            reg.launch("image/*")
+        }
+        lifecycleScope.launchWhenCreated {
+            viewModel.selfPersonState.collect { selfPerson ->
+                drawerHeaderBinding?.emailText?.text = selfPerson?.email
+                drawerHeaderBinding?.nameText?.text = selfPerson?.name
+                drawerHeaderBinding?.avatarImage?.loadAvatar(selfPerson?.photo.orEmpty())
+            }
+        }
     }
 
     override fun onDestroy() {
@@ -81,7 +112,7 @@ class MainActivity : AppCompatActivity() {
         binding?.navView?.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.signOutButton -> {
-                    userManager.signOut()
+                    viewModel.signOut()
                     startActivity(
                         Intent(this, AuthActivity::class.java)
                     )

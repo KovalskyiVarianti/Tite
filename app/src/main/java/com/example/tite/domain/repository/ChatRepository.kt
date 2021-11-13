@@ -8,5 +8,9 @@ interface ChatRepository {
     val chatEntityList: Flow<List<ChatEntity>>
     fun addChatListener(uid: String)
     fun removeChatListener(uid: String)
-    suspend fun createChat(selfPerson: PersonEntity, person: PersonEntity)
+    suspend fun createChat(
+        selfPerson: PersonEntity,
+        person: PersonEntity,
+        onChatIdCreated: (chatId: String) -> Unit
+    )
 }

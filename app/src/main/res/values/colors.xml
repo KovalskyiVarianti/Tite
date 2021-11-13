@@ -7,7 +7,7 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="main_color">#302632</color>
-    <color name="main_variant_color">#362739</color>
-    <color name="message_color">#281C2B</color>
+    <color name="main_color">#2f3136</color>
+    <color name="main_variant_color">#202225</color>
+    <color name="main_light_color">#36393f</color>
 </resources>

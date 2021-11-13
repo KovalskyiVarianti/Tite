@@ -10,7 +10,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         tools:listitem="@layout/chat_item"
-        android:background="@color/main_variant_color"
+        android:background="@color/main_light_color"
         android:orientation="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"

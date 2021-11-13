@@ -1,8 +1,10 @@
 package com.example.tite.presentation.chatlist
 
 import androidx.recyclerview.widget.DiffUtil
+import com.bumptech.glide.Glide
 import com.example.tite.databinding.ChatItemBinding
 import com.example.tite.presentation.ChatClickListener
+import com.example.tite.presentation.extensions.loadAvatar
 import com.example.tite.presentation.personlist.PersonListItem
 import com.hannesdorfmann.adapterdelegates4.AsyncListDifferDelegationAdapter
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateViewBinding
@@ -21,7 +23,7 @@ class ChatListAdapter(private val chatClickListener: ChatClickListener) :
             bind {
                 binding.apply {
                     personName.text = item.personName
-                    personImage //TODO load image
+                    personImage.loadAvatar(item.personPhoto)
                     chatTopMessage.text = item.topMessage
                     root.setOnClickListener { this@ChatListAdapter.chatClickListener(item.id, item.personUID) }
                 }

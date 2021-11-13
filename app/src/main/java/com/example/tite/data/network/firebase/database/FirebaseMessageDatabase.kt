@@ -1,4 +1,4 @@
-package com.example.tite.data.firebase.database
+package com.example.tite.data.network.firebase.database
 
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -10,7 +10,9 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import timber.log.Timber
 
-class FirebaseMessageDatabase(firebaseRTDB: FirebaseDatabase) {
+class FirebaseMessageDatabase(
+    firebaseRTDB: FirebaseDatabase,
+) {
     private val messageDB = firebaseRTDB.getReference(MESSAGE_ROOT)
     private val chatDB = firebaseRTDB.getReference(CHAT_ROOT)
 

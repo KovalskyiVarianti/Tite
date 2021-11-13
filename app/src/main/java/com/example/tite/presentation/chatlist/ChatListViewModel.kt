@@ -19,6 +19,7 @@ class ChatListViewModel(
 
     init {
         chatRepository.addChatListener(userManager.userUID.orEmpty())
+        personRepository.addPersonListListener()
     }
 
     val chatItemList =
@@ -34,5 +35,6 @@ class ChatListViewModel(
     override fun onCleared() {
         super.onCleared()
         chatRepository.removeChatListener(userManager.userUID.orEmpty())
+        personRepository.removePersonListListener()
     }
 }

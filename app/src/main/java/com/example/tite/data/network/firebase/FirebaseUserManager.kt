@@ -1,4 +1,4 @@
-package com.example.tite.data.firebase
+package com.example.tite.data.network.firebase
 
 import android.net.Uri
 import com.example.tite.domain.UserManager
@@ -20,8 +20,8 @@ class FirebaseUserManager(private val firebaseAuth: FirebaseAuth) : UserManager 
     override val name
         get() = firebaseAuth.currentUser?.displayName
 
-    override val photoUrl
-        get() = firebaseAuth.currentUser?.photoUrl
+    override val photoUri
+        get() = firebaseAuth.currentUser?.photoUrl.toString()
 
     override val isLoggedIn
         get() = firebaseAuth.currentUser != null

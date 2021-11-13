@@ -6,7 +6,7 @@ interface UserManager {
     val userUID: String?
     val userEmail: String?
     val name: String?
-    val photoUrl: Uri?
+    val photoUri: String?
     val isLoggedIn: Boolean
     fun updateName(name:String)
     fun updatePhoto(uri: Uri?)
