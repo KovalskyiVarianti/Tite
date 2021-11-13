@@ -49,9 +49,6 @@ class MainActivity : AppCompatActivity() {
         initToolbar()
         initNavController()
         initNavViewButtons()
-
-
-
         val reg = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             viewModel.uploadAvatar(uri) { avatarUri ->
                 drawerHeaderBinding?.avatarImage?.loadAvatar(avatarUri.toString())
@@ -62,9 +59,9 @@ class MainActivity : AppCompatActivity() {
         }
         lifecycleScope.launchWhenCreated {
             viewModel.selfPersonState.collect { selfPerson ->
-                drawerHeaderBinding?.emailText?.text = selfPerson?.email
-                drawerHeaderBinding?.nameText?.text = selfPerson?.name
-                drawerHeaderBinding?.avatarImage?.loadAvatar(selfPerson?.photo.orEmpty())
+                drawerHeaderBinding?.emailText?.text = selfPerson.email
+                drawerHeaderBinding?.nameText?.text = selfPerson.name
+                drawerHeaderBinding?.avatarImage?.loadAvatar(selfPerson.photo.orEmpty())
             }
         }
     }
@@ -121,6 +118,10 @@ class MainActivity : AppCompatActivity() {
                 R.id.personListFragment -> {
 //                    if (navController?.graph?.startDestination == navController?.currentDestination?.id)
                     navController?.navigate(ChatListFragmentDirections.actionChatListFragmentToPersonListFragment())
+                    true
+                }
+                R.id.contactListFragment -> {
+                    navController?.navigate(ChatListFragmentDirections.actionChatListFragmentToContactListFragment())
                     true
                 }
                 else -> {

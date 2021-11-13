@@ -3,16 +3,12 @@ package com.example.tite.services
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
+import android.media.RingtoneManager
 import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.graphics.drawable.IconCompat
-import androidx.core.graphics.drawable.toAdaptiveIcon
-import androidx.core.graphics.drawable.toIcon
 import com.bumptech.glide.Glide
 import com.example.tite.R
-import com.example.tite.domain.entities.PersonEntity
 import com.example.tite.domain.repository.PersonRepository
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
@@ -22,7 +18,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
-import org.koin.android.scope.serviceScope
 import timber.log.Timber
 import java.util.*
 
@@ -46,11 +41,15 @@ class FirebaseMessageService : FirebaseMessagingService() {
         if (remoteMessage.data.isNotEmpty()) {
             Timber.d("Message data payload: ${remoteMessage.data}")
         }
-        remoteMessage.notification?.title?.let {
+        val title = remoteMessage.data["title"]
+        val body = remoteMessage.data["body"]
+        title?.let {
             personRepository.addPersonInfoListener(it)
             createNotificationChannel()
             coroutineScope.launch {
-                remoteMessage.createNotification()
+                if (body != null) {
+                    remoteMessage.createNotification(title, body)
+                }
             }
         }
     }
@@ -68,18 +67,20 @@ class FirebaseMessageService : FirebaseMessagingService() {
         }
     }
 
-    private suspend fun RemoteMessage.createNotification() {
+    private suspend fun RemoteMessage.createNotification(title: String, body: String) {
         personInfo.collect { personEntity ->
             val personIcon = getFuturePersonIcon(personEntity.photo)
             val builder = NotificationCompat.Builder(this@FirebaseMessageService, from!!)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setLargeIcon(personIcon.get())
                 .setContentTitle(personEntity.name)
-                .setContentText(notification?.body)
+                .setContentText(body)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
             with(NotificationManagerCompat.from(this@FirebaseMessageService)) {
                 notify(Random().nextInt(), builder.build())
             }
+            personRepository.removePersonInfoListener(title)
         }
     }
 

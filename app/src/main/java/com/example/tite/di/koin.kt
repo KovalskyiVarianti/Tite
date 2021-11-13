@@ -19,6 +19,8 @@ import com.example.tite.domain.repository.MessageRepository
 import com.example.tite.domain.repository.PersonRepository
 import com.example.tite.presentation.MainViewModel
 import com.example.tite.presentation.chatlist.ChatListViewModel
+import com.example.tite.presentation.contactlist.ContactListViewModel
+import com.example.tite.presentation.persontocontact.PersonToContactViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.messaging.FirebaseMessaging
@@ -38,6 +40,8 @@ val viewModelModule = module {
     viewModel { ChatListViewModel(get(), get(), get()) }
     viewModel { PersonListViewModel(get(), get(), get()) }
     viewModel { MainViewModel(get(), get(), get()) }
+    viewModel { PersonToContactViewModel(get(), get(), get()) }
+    viewModel { ContactListViewModel(get()) }
 }
 
 val databaseModule = module {

@@ -27,27 +27,6 @@ class PersonListViewModel(
         PersonListItem.PersonItem(person.uid, person.name, person.email, person.photo)
     }
 
-    fun createChat(person: PersonListItem.PersonItem) {
-        viewModelScope.launch {
-            chatRepository.chatEntityList.collect { list ->
-                if (list.none { it.members.contains(person.uid) }) {
-                    chatRepository.createChat(
-                        userManager.asPersonEntity(),
-                        person.asPersonEntity()
-                    ) {
-                        
-                    }
-                }
-            }
-        }
-    }
-
-    private fun PersonListItem.PersonItem.asPersonEntity() =
-        PersonEntity(uid, personName, personEmail, personImageUri)
-
-    private fun UserManager.asPersonEntity() =
-        PersonEntity(userUID.orEmpty(), name.orEmpty(), userEmail.orEmpty(), photoUri.orEmpty())
-
     override fun onCleared() {
         super.onCleared()
         chatRepository.removeChatListener(userManager.userUID.orEmpty())

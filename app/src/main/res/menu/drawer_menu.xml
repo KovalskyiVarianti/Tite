@@ -8,4 +8,7 @@
     <item
         android:id="@+id/personListFragment"
         android:title="@string/to_persons" />
+    <item
+        android:id="@+id/contactListFragment"
+        android:title="@string/to_contacts" />
 </menu>

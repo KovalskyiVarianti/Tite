@@ -26,7 +26,7 @@ class PersonListAdapter(private val personClickListener: PersonClickListener) :
                     personImage.loadAvatar(item.personImageUri)
                     personName.text = item.personName
                     personEmail.text = item.personEmail
-                    root.setOnClickListener { this@PersonListAdapter.personClickListener(item) }
+                    root.setOnClickListener { this@PersonListAdapter.personClickListener(item.uid) }
                 }
             }
         }

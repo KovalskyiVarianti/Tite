@@ -9,6 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.target.Target
@@ -52,16 +53,18 @@ class MessageListFragment : Fragment(R.layout.fragment_message_list) {
     }
 
     private fun initViewModel() {
-        viewModel.addMessageListener(navArgs.chatId)
-        viewModel.addPersonInfoListener(navArgs.personUID)
-        lifecycleScope.launchWhenCreated {
-            viewModel.messageItemList.collect { messageList ->
-                adapter?.items = messageList
+        viewModel.apply {
+            addMessageListener(navArgs.chatId)
+            addPersonInfoListener(navArgs.personUID)
+            lifecycleScope.launchWhenCreated {
+                messageItemList.collect { messageList ->
+                    adapter?.items = messageList
+                }
             }
-        }
-        lifecycleScope.launchWhenCreated {
-            viewModel.personInfo.collect {
-                updateToolbar(it.name)
+            lifecycleScope.launchWhenCreated {
+                personInfo.collect {
+                    updateToolbar(it.name)
+                }
             }
         }
     }
@@ -70,6 +73,7 @@ class MessageListFragment : Fragment(R.layout.fragment_message_list) {
         super.onDestroyView()
         binding = null
         viewModel.removeMessageListener(navArgs.chatId)
+        viewModel.removePersonInfoListener(navArgs.personUID)
     }
 
     private fun updateToolbar(title: String) {
@@ -81,6 +85,20 @@ class MessageListFragment : Fragment(R.layout.fragment_message_list) {
         val layoutManager =
             (binding?.messageListRecyclerView?.layoutManager as? LinearLayoutManager)
         adapter = MessageListAdapter()
+        adapter?.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                super.onItemRangeInserted(positionStart, itemCount)
+                binding?.apply {
+                    messageListRecyclerView.smoothScrollToPosition(
+                        if (itemCount > 1) {
+                            itemCount - 1
+                        } else {
+                            positionStart
+                        }
+                    )
+                }
+            }
+        })
         layoutManager?.stackFromEnd = true
         binding?.messageListRecyclerView?.adapter = adapter
     }

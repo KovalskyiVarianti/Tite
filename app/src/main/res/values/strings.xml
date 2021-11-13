@@ -11,4 +11,8 @@
     <string name="login_description">If already have an account -</string>
     <string name="email_edit_text_hint">example@example.com</string>
     <string name="nickname_hint">Some Name</string>
+    <string name="relation_to_you">Relation to you:</string>
+    <string name="add_to_contacts">Add To Contacts</string>
+    <string name="work_family_friends_etc_hint">Work, Family, Friends, etc</string>
+    <string name="to_contacts">To contacts</string>
 </resources>

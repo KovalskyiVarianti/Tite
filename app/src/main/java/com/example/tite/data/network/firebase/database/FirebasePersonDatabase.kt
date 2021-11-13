@@ -19,6 +19,7 @@ class FirebasePersonDatabase(
     private val userManager: UserManager
 ) {
     private val personDB = firebaseRTDB.getReference(PERSON_ROOT)
+    private val contactDB = firebaseRTDB.getReference(CONTACT_ROOT)
     private val avatarDB = firebaseStorage.getReference(AVATAR_ROOT)
 
     private val _personDBEntityList =
@@ -27,6 +28,10 @@ class FirebasePersonDatabase(
 
     private val _personDBInfo = MutableSharedFlow<PersonDBEntity>(1, 0, BufferOverflow.DROP_OLDEST)
     val personDBInfo = _personDBInfo.asSharedFlow()
+
+    private val _contactDBEntityList =
+        MutableSharedFlow<List<ContactDBEntity>>(1, 0, BufferOverflow.DROP_OLDEST)
+    val contactDBEntityList = _contactDBEntityList.asSharedFlow()
 
     private val job = Job()
     private val coroutineScope = CoroutineScope(Dispatchers.IO + job)
@@ -65,17 +70,20 @@ class FirebasePersonDatabase(
         }
     }
 
-    private val personPhotoListener = object : ValueEventListener {
+    private val contactListListener = object : ValueEventListener {
         override fun onDataChange(snapshot: DataSnapshot) {
             coroutineScope.launch {
-
+                val contactList = mutableListOf<ContactDBEntity>()
+                for (contactChild in snapshot.children) {
+                    contactList.add(contactChild.getValue(ContactDBEntity::class.java) ?: continue)
+                }
+                _contactDBEntityList.emit(contactList)
             }
         }
 
         override fun onCancelled(error: DatabaseError) {
-
+            Timber.d("Data loading error: ${error.message}")
         }
-
     }
 
     suspend fun createPerson(personDBEntity: PersonDBEntity) = withContext(Dispatchers.IO) {
@@ -98,7 +106,15 @@ class FirebasePersonDatabase(
         personDB.child(personUID).removeEventListener(personInfoListener)
     }
 
-    fun uploadAvatar(uri: Uri, onSuccess: (avatarUri : Uri) -> Unit) {
+    fun addContactListListener() {
+        contactDB.child(userManager.userUID.orEmpty()).addValueEventListener(contactListListener)
+    }
+
+    fun removeContactListListener() {
+        contactDB.child(userManager.userUID.orEmpty()).removeEventListener(contactListListener)
+    }
+
+    fun uploadAvatar(uri: Uri, onSuccess: (avatarUri: Uri) -> Unit) {
         avatarDB.child(userManager.userUID.orEmpty())
             .putFile(uri)
             .addOnSuccessListener { snapshot ->
@@ -118,6 +134,7 @@ class FirebasePersonDatabase(
 
     private companion object {
         const val PERSON_ROOT = "persons"
+        const val CONTACT_ROOT = "contacts"
         const val AVATAR_ROOT = "avatars"
         const val AVATAR = "photoUri"
     }

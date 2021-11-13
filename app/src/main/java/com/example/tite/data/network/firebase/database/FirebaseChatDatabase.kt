@@ -13,6 +13,7 @@ import timber.log.Timber
 class FirebaseChatDatabase(firebaseRTDB: FirebaseDatabase) {
 
     private val chatDB = firebaseRTDB.getReference(CHAT_ROOT)
+    private val contactDB = firebaseRTDB.getReference(CONTACT_ROOT)
 
     private val _chatDBEntityList =
         MutableSharedFlow<List<ChatDBEntity>>(1, 0, BufferOverflow.DROP_OLDEST)
@@ -46,15 +47,18 @@ class FirebaseChatDatabase(firebaseRTDB: FirebaseDatabase) {
         chatDB.child(uid).removeEventListener(chatListener)
     }
 
-    suspend fun createChat(
+    suspend fun addToContactAndCreateChat(
         selfPerson: PersonDBEntity,
         person: PersonDBEntity,
+        relation: String,
         onChatIdCreated: (chatId: String) -> Unit
     ) =
         withContext(Dispatchers.IO) {
             val chatSelfPush = chatDB.child(selfPerson.uid.orEmpty()).push()
             chatSelfPush.key?.let { key ->
-                onChatIdCreated(key)
+                withContext(Dispatchers.Main) {
+                    onChatIdCreated(key)
+                }
                 chatSelfPush.setValue(
                     ChatDBEntity(
                         key,
@@ -68,10 +72,25 @@ class FirebaseChatDatabase(firebaseRTDB: FirebaseDatabase) {
                             listOf(selfPerson.uid.orEmpty(), person.uid.orEmpty())
                         )
                     )
+                contactDB.child(selfPerson.uid.orEmpty()).child(person.uid.orEmpty()).setValue(
+                    ContactDBEntity(
+                        person.uid,
+                        key,
+                        relation
+                    )
+                )
+                contactDB.child(person.uid.orEmpty()).child(selfPerson.uid.orEmpty()).setValue(
+                    ContactDBEntity(
+                        selfPerson.uid,
+                        key,
+                        relation
+                    )
+                )
             }
         }
 
     private companion object {
         const val CHAT_ROOT = "chats"
+        const val CONTACT_ROOT = "contacts"
     }
 }

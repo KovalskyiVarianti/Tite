@@ -8,6 +8,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.tite.R
 import com.example.tite.databinding.FragmentPersonListBinding
 import kotlinx.coroutines.flow.collect
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PersonListFragment : Fragment(R.layout.fragment_person_list) {
@@ -32,12 +33,12 @@ class PersonListFragment : Fragment(R.layout.fragment_person_list) {
     }
 
     private fun initRecyclerView() {
-        adapter = PersonListAdapter { person ->
+        adapter = PersonListAdapter { personUID ->
             findNavController().navigate(
-                PersonListFragmentDirections
-                    .actionPersonListFragmentToChatListFragment()
+                PersonListFragmentDirections.actionPersonListFragmentToPersonToContactFragment(
+                    personUID
+                )
             )
-            viewModel.createChat(person)
         }
         binding?.let { it.personListRecyclerView.adapter = adapter }
     }

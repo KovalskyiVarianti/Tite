@@ -39,6 +39,10 @@ class MessageListViewModel(
         personRepository.addPersonInfoListener(personUID)
     }
 
+    fun removePersonInfoListener(personUID: String){
+        personRepository.removePersonInfoListener(personUID)
+    }
+
     fun sendMessage(chatId: String, personUID: String, text: String) {
         viewModelScope.launch {
             messageRepository.sendMessage(
@@ -57,8 +61,4 @@ class MessageListViewModel(
     private fun MessageEntity.asMessageItem() = MessageListItem.MessageItem(
         id.orEmpty(), text, senderUID == userManager.userUID
     )
-
-    override fun onCleared() {
-        super.onCleared()
-    }
 }

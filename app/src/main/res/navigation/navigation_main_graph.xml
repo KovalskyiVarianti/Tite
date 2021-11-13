@@ -11,9 +11,8 @@
         android:label="Persons"
         tools:layout="@layout/fragment_person_list">
         <action
-            android:id="@+id/action_personListFragment_to_chatListFragment"
-            app:destination="@id/chatListFragment"
-            app:popUpTo="@id/chatListFragment" />
+            android:id="@+id/action_personListFragment_to_personToContactFragment"
+            app:destination="@id/personToContactFragment" />
     </fragment>
     <fragment
         android:id="@+id/messageListFragment"
@@ -36,6 +35,32 @@
             app:destination="@id/personListFragment" />
         <action
             android:id="@+id/action_chatListFragment_to_messageListFragment"
+            app:destination="@id/messageListFragment" />
+        <action
+            android:id="@+id/action_chatListFragment_to_contactListFragment"
+            app:destination="@id/contactListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/personToContactFragment"
+        android:name="com.example.tite.presentation.persontocontact.PersonToContactFragment"
+        android:label="New contact"
+        tools:layout="@layout/fragment_person_to_contact">
+        <argument
+            android:name="personUID"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_personToContactFragment_to_messageListFragment"
+            app:destination="@id/messageListFragment"
+            app:popUpTo="@id/chatListFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/contactListFragment"
+        android:name="com.example.tite.presentation.contactlist.ContactListFragment"
+        android:label="ContactListFragment"
+        tools:layout="@layout/fragment_contact_list">
+        <action
+            android:id="@+id/action_contactListFragment_to_messageListFragment"
             app:destination="@id/messageListFragment" />
     </fragment>
 </navigation>

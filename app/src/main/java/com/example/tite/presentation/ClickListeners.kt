@@ -1,6 +1,5 @@
 package com.example.tite.presentation
 
-import com.example.tite.presentation.personlist.PersonListItem
-
-typealias PersonClickListener = (person: PersonListItem.PersonItem) -> Unit
+typealias PersonClickListener = (personUID: String) -> Unit
 typealias ChatClickListener = (chatId: String, personUID: String) -> Unit
+typealias ContactClickListener = (chatId: String, contactUID: String) -> Unit

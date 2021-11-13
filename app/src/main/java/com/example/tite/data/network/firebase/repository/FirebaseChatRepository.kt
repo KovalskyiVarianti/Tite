@@ -24,15 +24,17 @@ class FirebaseChatRepository(private val chatDatabase: FirebaseChatDatabase) : C
         chatDatabase.removeChatListener(uid)
     }
 
-    override suspend fun createChat(
+    override suspend fun addToContactAndCreateChat(
         selfPerson: PersonEntity,
         person: PersonEntity,
+        relation: String,
         onChatIdCreated: (chatId: String) -> Unit
     ) {
         withContext(Dispatchers.IO) {
-            chatDatabase.createChat(
+            chatDatabase.addToContactAndCreateChat(
                 selfPerson.asPersonDBEntity(),
                 person.asPersonDBEntity(),
+                relation,
                 onChatIdCreated
             )
         }

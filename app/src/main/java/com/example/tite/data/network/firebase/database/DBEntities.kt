@@ -28,3 +28,11 @@ data class MessageDBEntity(
     val receiverUID: String? = "",
     val text: String? = "",
 )
+
+@Parcelize
+@IgnoreExtraProperties
+data class ContactDBEntity(
+    val id: String? = "",
+    val chatId: String? = "",
+    val relation: String? = "",
+)
