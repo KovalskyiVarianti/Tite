@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.tite"
-        minSdk 22
+        minSdk 24
         targetSdk 31
         versionCode 1
         versionName "1.0"
@@ -22,7 +22,7 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -91,4 +91,11 @@ dependencies {
 
     //AdapterDelegates for RecyclerView
     implementation 'com.hannesdorfmann:adapterdelegates4-kotlin-dsl-viewbinding:4.3.0'
+
+    //Shared Preferences
+    implementation "androidx.preference:preference-ktx:1.1.1"
+
+    //Datastore Preferences
+//    implementation "androidx.datastore:datastore-preferences:1.0.0"
+
 }

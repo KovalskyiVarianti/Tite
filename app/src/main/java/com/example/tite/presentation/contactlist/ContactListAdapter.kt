@@ -1,15 +1,15 @@
 package com.example.tite.presentation.contactlist
 
 import androidx.recyclerview.widget.DiffUtil
-import com.example.tite.databinding.ChatItemBinding
 import com.example.tite.databinding.ContactItemBinding
 import com.example.tite.presentation.ContactClickListener
-import com.example.tite.presentation.chatlist.ChatListItem
 import com.example.tite.presentation.extensions.loadAvatar
 import com.hannesdorfmann.adapterdelegates4.AsyncListDifferDelegationAdapter
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateViewBinding
 
-class ContactListAdapter(private val contactClickListener: ContactClickListener) :
+class ContactListAdapter(
+    private val contactClickListener: ContactClickListener
+) :
     AsyncListDifferDelegationAdapter<ContactListItem>(ContactListDiffCallback) {
 
     init {

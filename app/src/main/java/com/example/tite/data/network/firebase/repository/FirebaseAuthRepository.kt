@@ -59,6 +59,6 @@ class FirebaseAuthRepository(
     }
 
     private fun UserManager.getPersonDBEntity(nickname: String) = PersonDBEntity(
-        userUID.orEmpty(), nickname, userEmail.orEmpty(), photoUri.toString()
+        userUID.orEmpty(), nickname, userEmail.orEmpty(), photoUrl.toString()
     )
 }

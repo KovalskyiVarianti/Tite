@@ -1,8 +1,6 @@
 package com.example.tite.presentation
 
 import android.content.Intent
-import android.graphics.BitmapFactory
-import android.net.Uri
 import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -15,22 +13,14 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.tite.R
+import com.example.tite.data.network.RetrofitNotificationApi.Companion.CHAT
+import com.example.tite.data.network.RetrofitNotificationApi.Companion.ID
 import com.example.tite.databinding.ActivityMainBinding
 import com.example.tite.databinding.DrawerHeaderBinding
 import com.example.tite.presentation.chatlist.ChatListFragmentDirections
 import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import androidx.core.app.ActivityCompat.startActivityForResult
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
-import com.example.tite.domain.UserManager
 import com.example.tite.presentation.extensions.loadAvatar
-import com.google.firebase.messaging.FirebaseMessaging
-import com.google.firebase.messaging.FirebaseMessagingService
-import com.google.firebase.messaging.RemoteMessage
-import com.google.firebase.storage.FirebaseStorage
-import org.koin.android.ext.android.inject
-import timber.log.Timber
 
 
 class MainActivity : AppCompatActivity() {
@@ -49,8 +39,10 @@ class MainActivity : AppCompatActivity() {
         initToolbar()
         initNavController()
         initNavViewButtons()
+        checkIfOpenedByNotification()
         val reg = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             viewModel.uploadAvatar(uri) { avatarUri ->
+                viewModel.savePhoto(avatarUri)
                 drawerHeaderBinding?.avatarImage?.loadAvatar(avatarUri.toString())
             }
         }
@@ -61,8 +53,21 @@ class MainActivity : AppCompatActivity() {
             viewModel.selfPersonState.collect { selfPerson ->
                 drawerHeaderBinding?.emailText?.text = selfPerson.email
                 drawerHeaderBinding?.nameText?.text = selfPerson.name
-                drawerHeaderBinding?.avatarImage?.loadAvatar(selfPerson.photo.orEmpty())
+                drawerHeaderBinding?.avatarImage?.loadAvatar(selfPerson.photo)
             }
+        }
+    }
+
+    private fun checkIfOpenedByNotification() {
+        val personId = intent.getStringExtra(ID)
+        val chatId = intent.getStringExtra(CHAT)
+        if (!personId.isNullOrBlank() && !chatId.isNullOrBlank()) {
+            navController?.navigate(
+                ChatListFragmentDirections.actionChatListFragmentToMessageListFragment(
+                    chatId,
+                    personId
+                )
+            )
         }
     }
 
@@ -93,15 +98,15 @@ class MainActivity : AppCompatActivity() {
         navController?.let {
             setupActionBarWithNavController(it, binding?.drawer)
             binding?.navView?.setupWithNavController(it)
-        }
-        navController?.addOnDestinationChangedListener { controller, destination, _ ->
-            binding?.drawer?.setDrawerLockMode(
-                if (destination.id == controller.graph.startDestination) {
-                    DrawerLayout.LOCK_MODE_UNLOCKED
-                } else {
-                    DrawerLayout.LOCK_MODE_LOCKED_CLOSED
-                }
-            )
+            it.addOnDestinationChangedListener { controller, destination, _ ->
+                binding?.drawer?.setDrawerLockMode(
+                    if (destination.id == controller.graph.startDestination) {
+                        DrawerLayout.LOCK_MODE_UNLOCKED
+                    } else {
+                        DrawerLayout.LOCK_MODE_LOCKED_CLOSED
+                    }
+                )
+            }
         }
     }
 
@@ -116,7 +121,6 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.personListFragment -> {
-//                    if (navController?.graph?.startDestination == navController?.currentDestination?.id)
                     navController?.navigate(ChatListFragmentDirections.actionChatListFragmentToPersonListFragment())
                     true
                 }

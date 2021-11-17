@@ -2,14 +2,28 @@ package com.example.tite.services
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.media.RingtoneManager
 import android.os.Build
+import android.os.Bundle
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.example.tite.R
+import com.example.tite.data.network.NotificationData
+import com.example.tite.data.network.RetrofitNotificationApi.Companion.CHAT
+import com.example.tite.data.network.RetrofitNotificationApi.Companion.ID
+import com.example.tite.data.network.RetrofitNotificationApi.Companion.NAME
+import com.example.tite.data.network.RetrofitNotificationApi.Companion.PHOTO
+import com.example.tite.data.network.RetrofitNotificationApi.Companion.TEXT
 import com.example.tite.domain.repository.PersonRepository
+import com.example.tite.presentation.MainActivity
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import kotlinx.coroutines.CoroutineScope
@@ -25,12 +39,6 @@ const val CHANNEL_NAME = "TITE TEST CHANNEL"
 
 class FirebaseMessageService : FirebaseMessagingService() {
 
-    private val personRepository: PersonRepository by inject()
-    private val personInfo = personRepository.personInfo
-
-    private val job = Job()
-    private val coroutineScope = CoroutineScope(Dispatchers.IO + job)
-
     override fun onNewToken(p0: String) {
         super.onNewToken(p0)
         Timber.d("New token: $p0")
@@ -40,18 +48,10 @@ class FirebaseMessageService : FirebaseMessagingService() {
         Timber.d("From: ${remoteMessage.from}")
         if (remoteMessage.data.isNotEmpty()) {
             Timber.d("Message data payload: ${remoteMessage.data}")
-        }
-        val title = remoteMessage.data["title"]
-        val body = remoteMessage.data["body"]
-        title?.let {
-            personRepository.addPersonInfoListener(it)
             createNotificationChannel()
-            coroutineScope.launch {
-                if (body != null) {
-                    remoteMessage.createNotification(title, body)
-                }
-            }
+            remoteMessage.showNotification(remoteMessage.getNotificationData())
         }
+
     }
 
     private fun createNotificationChannel() {
@@ -67,26 +67,48 @@ class FirebaseMessageService : FirebaseMessagingService() {
         }
     }
 
-    private suspend fun RemoteMessage.createNotification(title: String, body: String) {
-        personInfo.collect { personEntity ->
-            val personIcon = getFuturePersonIcon(personEntity.photo)
-            val builder = NotificationCompat.Builder(this@FirebaseMessageService, from!!)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setLargeIcon(personIcon.get())
-                .setContentTitle(personEntity.name)
-                .setContentText(body)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-            with(NotificationManagerCompat.from(this@FirebaseMessageService)) {
-                notify(Random().nextInt(), builder.build())
-            }
-            personRepository.removePersonInfoListener(title)
-        }
-    }
-
-    private fun getFuturePersonIcon(photoUrl: String) =
+    private fun RemoteMessage.showNotification(data: NotificationData) {
         Glide.with(this@FirebaseMessageService)
             .asBitmap()
-            .load(photoUrl)
-            .submit()
+            .load(data.photo)
+            .into(object : CustomTarget<Bitmap>() {
+                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                    val builder = NotificationCompat.Builder(this@FirebaseMessageService, from!!)
+                        .setSmallIcon(R.mipmap.ic_launcher)
+                        .setLargeIcon(resource)
+                        .setContentTitle(data.name)
+                        .setContentText(data.text)
+                        .setPriority(NotificationCompat.PRIORITY_HIGH)
+                        .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                        .setContentIntent(getPendingIntent(data.id, data.chat))
+                        .setChannelId(CHANNEL_NAME)
+                    with(NotificationManagerCompat.from(this@FirebaseMessageService)) {
+                        notify(Random().nextInt(), builder.build())
+                    }
+                }
+
+                override fun onLoadCleared(placeholder: Drawable?) {}
+
+            })
+    }
+
+    private fun getPendingIntent(id: String, chatId: String): PendingIntent? {
+        return PendingIntent.getActivity(
+            this,
+            0,
+            Intent(this, MainActivity::class.java)
+                .putExtra(ID, id).putExtra(CHAT, chatId).apply {
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                },
+            PendingIntent.FLAG_CANCEL_CURRENT
+        )
+    }
+
+    private fun RemoteMessage.getNotificationData() = NotificationData(
+        data[ID].orEmpty(),
+        data[NAME].orEmpty(),
+        data[PHOTO].orEmpty(),
+        data[TEXT].orEmpty(),
+        data[CHAT].orEmpty()
+    )
 }

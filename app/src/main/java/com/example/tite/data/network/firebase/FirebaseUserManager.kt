@@ -20,7 +20,7 @@ class FirebaseUserManager(private val firebaseAuth: FirebaseAuth) : UserManager 
     override val name
         get() = firebaseAuth.currentUser?.displayName
 
-    override val photoUri
+    override val photoUrl
         get() = firebaseAuth.currentUser?.photoUrl.toString()
 
     override val isLoggedIn

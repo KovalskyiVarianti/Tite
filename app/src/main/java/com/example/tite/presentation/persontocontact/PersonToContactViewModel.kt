@@ -49,7 +49,7 @@ class PersonToContactViewModel(
     }
 
     private fun UserManager.asPersonEntity() =
-        PersonEntity(userUID.orEmpty(), name.orEmpty(), userEmail.orEmpty(), photoUri.orEmpty())
+        PersonEntity(userUID.orEmpty(), name.orEmpty(), userEmail.orEmpty(), photoUrl.orEmpty())
 
     override fun onCleared() {
         super.onCleared()

@@ -16,17 +16,18 @@ class MainViewModel(
     init {
         userManager.userUID?.let {
             personRepository.addPersonInfoListener(it)
-            //// firebase test
             messageRepository.subscribeOnNotifications(it)
         }
-
-
     }
 
     val selfPersonState = personRepository.personInfo
 
     fun uploadAvatar(uri: Uri, onSuccess: (avatarUri : Uri) -> Unit){
         personRepository.uploadAvatar(uri, onSuccess)
+    }
+
+    fun savePhoto(avatarUri: Uri) {
+        userManager.updatePhoto(avatarUri)
     }
 
     fun signOut() = userManager.signOut()

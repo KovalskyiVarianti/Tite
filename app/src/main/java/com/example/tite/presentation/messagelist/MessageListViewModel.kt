@@ -2,6 +2,7 @@ package com.example.tite.presentation.messagelist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.tite.data.network.NotificationData
 import com.example.tite.domain.entities.MessageEntity
 import com.example.tite.domain.repository.MessageRepository
 import com.example.tite.domain.UserManager
@@ -39,22 +40,22 @@ class MessageListViewModel(
         personRepository.addPersonInfoListener(personUID)
     }
 
-    fun removePersonInfoListener(personUID: String){
+    fun removePersonInfoListener(personUID: String) {
         personRepository.removePersonInfoListener(personUID)
     }
 
     fun sendMessage(chatId: String, personUID: String, text: String) {
         viewModelScope.launch {
             messageRepository.sendMessage(
-                MessageEntity(
-                    null,
+                MessageEntity(null, userManager.userUID.orEmpty(), personUID, text),
+                NotificationData(
                     userManager.userUID.orEmpty(),
-                    personUID,
-                    text
-                ),
-                chatId,
+                    userManager.name.orEmpty(),
+                    userManager.photoUrl.orEmpty(),
+                    text,
+                    chatId
+                )
             )
-
         }
     }
 

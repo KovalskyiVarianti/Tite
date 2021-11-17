@@ -57,7 +57,7 @@
     <fragment
         android:id="@+id/contactListFragment"
         android:name="com.example.tite.presentation.contactlist.ContactListFragment"
-        android:label="ContactListFragment"
+        android:label="Contacts"
         tools:layout="@layout/fragment_contact_list">
         <action
             android:id="@+id/action_contactListFragment_to_messageListFragment"

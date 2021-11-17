@@ -68,6 +68,8 @@ val retrofitModule = module {
     single { createNotificationApiService }
 }
 
+//Firebase
+
 private const val FIREBASE_REALTIME_DATABASE_URL =
     "https://tite-f804f-default-rtdb.europe-west1.firebasedatabase.app/"
 
@@ -85,6 +87,8 @@ private val createFirebaseAuth: FirebaseAuth by lazy {
 private val createFirebaseMessaging: FirebaseMessaging by lazy {
     FirebaseMessaging.getInstance()
 }
+
+//Retrofit
 
 private val retrofit = Retrofit.Builder()
     .baseUrl(RetrofitNotificationApi.BASE_URL)

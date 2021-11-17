@@ -1,27 +1,16 @@
 package com.example.tite.presentation.messagelist
 
-import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.CustomTarget
-import com.bumptech.glide.request.target.Target
-import com.bumptech.glide.request.transition.Transition
 import com.example.tite.R
 import com.example.tite.databinding.FragmentMessageListBinding
 import com.example.tite.presentation.MainActivity
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MessageListFragment : Fragment(R.layout.fragment_message_list) {
@@ -29,7 +18,7 @@ class MessageListFragment : Fragment(R.layout.fragment_message_list) {
     private val navArgs by navArgs<MessageListFragmentArgs>()
     private var binding: FragmentMessageListBinding? = null
     private val viewModel: MessageListViewModel by viewModel()
-    private var adapter: MessageListAdapter? = null
+    private var messageListAdapter: MessageListAdapter? = null
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -58,7 +47,7 @@ class MessageListFragment : Fragment(R.layout.fragment_message_list) {
             addPersonInfoListener(navArgs.personUID)
             lifecycleScope.launchWhenCreated {
                 messageItemList.collect { messageList ->
-                    adapter?.items = messageList
+                    messageListAdapter?.items = messageList
                 }
             }
             lifecycleScope.launchWhenCreated {
@@ -82,10 +71,20 @@ class MessageListFragment : Fragment(R.layout.fragment_message_list) {
     }
 
     private fun initRecyclerView() {
-        val layoutManager =
-            (binding?.messageListRecyclerView?.layoutManager as? LinearLayoutManager)
-        adapter = MessageListAdapter()
-        adapter?.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+        messageListAdapter = MessageListAdapter()
+        messageListAdapter?.scrollWhenMessageAdded()
+        binding?.messageListRecyclerView?.apply {
+            adapter = messageListAdapter
+            (layoutManager as LinearLayoutManager).stackFromEnd = true
+        }
+    }
+
+    private fun initBinding(view: View) {
+        binding = FragmentMessageListBinding.bind(view)
+    }
+
+    private fun MessageListAdapter.scrollWhenMessageAdded() {
+        registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
                 super.onItemRangeInserted(positionStart, itemCount)
                 binding?.apply {
@@ -99,11 +98,5 @@ class MessageListFragment : Fragment(R.layout.fragment_message_list) {
                 }
             }
         })
-        layoutManager?.stackFromEnd = true
-        binding?.messageListRecyclerView?.adapter = adapter
-    }
-
-    private fun initBinding(view: View) {
-        binding = FragmentMessageListBinding.bind(view)
     }
 }

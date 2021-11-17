@@ -3,6 +3,7 @@ package com.example.tite.data.network.firebase.repository
 import com.example.tite.data.network.Notification
 import com.example.tite.data.network.NotificationData
 import com.example.tite.data.network.RetrofitNotificationApi
+import com.example.tite.data.network.RetrofitNotificationApi.Companion.TOPICS
 import com.example.tite.data.network.firebase.database.FirebaseMessageDatabase
 import com.example.tite.data.network.firebase.database.MessageDBEntity
 import com.example.tite.data.network.firebase.database.PersonDBEntity
@@ -27,18 +28,20 @@ class FirebaseMessageRepository(
 
     override suspend fun sendMessage(
         message: MessageEntity,
-        chatId: String,
+        notification: NotificationData,
     ) {
         withContext(Dispatchers.IO) {
-            messageDatabase.sendMessage(chatId, message.asMessageDBEntity())
+            messageDatabase.sendMessage(notification.chat, message.asMessageDBEntity())
             retrofitNotificationApi.sendNotification(
-                Notification(NotificationData(message.senderUID, message.text),"/topics/${message.receiverUID}")
+                Notification(notification,
+                    TOPICS + message.receiverUID
+                )
             )
         }
     }
 
     override fun subscribeOnNotifications(userUID: String) {
-        firebaseMessaging.subscribeToTopic("/topics/${userUID}")
+        firebaseMessaging.subscribeToTopic(TOPICS + userUID)
     }
 
     override fun addMessageListener(chatId: String) {
@@ -59,10 +62,4 @@ class FirebaseMessageRepository(
             receiverUID.orEmpty(),
             text.orEmpty()
         )
-
-    private fun PersonEntity.asPersonDBEntity() =
-        PersonDBEntity(uid, name, email, photo)
-
-    private fun PersonDBEntity.asPersonEntity() =
-        PersonEntity(uid.orEmpty(), name.orEmpty(), email.orEmpty(), photoUri.orEmpty())
 }
